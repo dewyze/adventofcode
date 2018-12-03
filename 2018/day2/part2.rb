@@ -6,6 +6,7 @@ ids.each_with_index do |id1, i|
     if result.count(false) == 1
       id1.delete_at(result.find_index(false))
       puts id1.reduce("", :+)
+      abort
     end
   end
 end
