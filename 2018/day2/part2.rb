@@ -4,8 +4,8 @@ ids.each_with_index do |id1, i|
   ids[(i+1)..-1].each do |id2|
     result = id1.zip(id2).map {|l| l.uniq.length == 1}
     if result.count(false) == 1
+      id1.delete_at(result.find_index(false))
       puts id1.reduce("", :+)
-      abort
     end
   end
 end
