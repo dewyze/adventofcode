@@ -5,7 +5,7 @@ ids = []
 not_possible = []
 
 input.each do |cmd|
-  cmds = cmd.split(" ")
+  cmds = cmd.split("]")
   id = cmds[0]
   ids << id
   x,y = cmds[2].chomp(":").split(",").map(&:to_i)
