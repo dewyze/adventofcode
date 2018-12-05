@@ -7,17 +7,10 @@ chars =
 |> Enum.map(fn letter ->
   chars
   |> Enum.reject(fn x -> letter == x || letter == x + 32 end)
-  |> Enum.reduce([], fn x, acc ->
-    cond do
-      acc == [] ->
-        [x]
-
-      abs(x - hd(acc)) == 32 ->
-        tl(acc)
-
-      true ->
-        [x | acc]
-    end
+  |> Enum.reduce([], fn
+    x, [] -> [x]
+    x, [h | t] when abs(x - h) == 32 -> t
+    x, acc -> [x | acc]
   end)
   |> length
 end)

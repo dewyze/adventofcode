@@ -1,17 +1,10 @@
 File.read!("input.txt")
 |> String.trim()
 |> String.to_charlist()
-|> Enum.reduce([], fn x, acc ->
-  cond do
-    acc == [] ->
-      [x]
-
-    abs(x - hd(acc)) == 32 ->
-      tl(acc)
-
-    true ->
-      [x | acc]
-  end
+|> Enum.reduce([], fn
+  x, [] -> [x]
+  x, [h | t] when abs(x - h) == 32 -> t
+  x, acc -> [x | acc]
 end)
 |> length
 |> IO.inspect()
