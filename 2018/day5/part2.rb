@@ -1,7 +1,6 @@
 input = File.read("input.txt").chomp.chars
 
-lengths = {}
-result = ('a'..'z').min_by do |letter|
+result = ('a'..'z').map do |letter|
   new_input = input.reject {|c| c.downcase == letter}
 
   result = new_input.reduce("") do |acc, x|
@@ -12,6 +11,6 @@ result = ('a'..'z').min_by do |letter|
       acc + x
     end
   end
-  lengths[letter] = result.length
+  result.length
 end
-puts lengths[result]
+puts result.min
