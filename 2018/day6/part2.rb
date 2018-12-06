@@ -1,4 +1,3 @@
-require 'pry'
 inputs = File.readlines("input.txt")
 coords = inputs.map{|i| i.chomp.split(", ").map(&:to_i)}
 ((min_x, _), (max_x, _)) = coords.minmax_by{|(x, y)| x}
@@ -7,7 +6,7 @@ coords = inputs.map{|i| i.chomp.split(", ").map(&:to_i)}
 length = max_x - min_x + 1
 height = max_y - min_y + 1
 
-grid = Array.new(height){Array.new(length) { 1 }}
+grid = Array.new(height){Array.new(length) { 0 }}
 coords.each_with_index do |(x, y), label|
   (0...grid.length).each do |i|
     (0...grid[0].length).each do |j|
