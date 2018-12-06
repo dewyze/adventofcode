@@ -1,33 +1,26 @@
+require 'pry'
 inputs = File.readlines("input.txt")
 coords = inputs.map{|i| i.chomp.split(", ").map(&:to_i)}
-xs = coords.map{|(x, y)| x}
-ys = coords.map{|(x, y)| y}
-min_x = xs.min
-max_x = xs.max
-min_y = ys.min
-max_y = ys.max
+((min_x, _), (max_x, _)) = coords.minmax_by{|(x, y)| x}
+((_, min_y), (_, max_y)) = coords.minmax_by{|(x, y)| y}
 
 length = max_x - min_x + 1
 height = max_y - min_y + 1
 
-grid = Array.new(height){Array.new(length) { {} }}
+grid = Array.new(height){Array.new(length) { 1 }}
 coords.each_with_index do |(x, y), label|
-  grid.each_with_index do |row, i|
-    row.each_with_index do |cell, j|
+  (0...grid.length).each do |i|
+    (0...grid[0].length).each do |j|
       distance = (x - (min_x + j)).abs + (y - (min_y + i)).abs
-      if cell[:total].nil?
-        cell[:total] = distance
-      else
-        cell[:total] += distance
-      end
+      grid[i][j] += distance
     end
   end
 end
 
-count = 0
-grid.each_with_index do |row, i|
-  row.each_with_index do |cell, j|
-    count +=1 if cell[:total] < 10000
+result = grid.reduce(0) do |acc, row|
+  row.each do |cell|
+    acc += 1 if cell < 10000
   end
+  acc
 end
-puts count
+puts result
