@@ -15,27 +15,19 @@ coords.each_with_index do |(x, y), label|
   grid.each_with_index do |row, i|
     row.each_with_index do |cell, j|
       distance = (x - (min_x + j)).abs + (y - (min_y + i)).abs
-      if cell[:length].nil? || distance < cell[:length]
-        cell[:length] = distance
-        cell[:labels] = [label]
-      elsif distance == cell[:length]
-        cell[:labels] << [label]
+      if cell[:total].nil?
+        cell[:total] = distance
+      else
+        cell[:total] += distance
       end
     end
   end
 end
 
-counts = {}
+count = 0
 grid.each_with_index do |row, i|
   row.each_with_index do |cell, j|
-    if cell[:labels].length == 1
-      label = cell[:labels].first
-      if counts[label].nil?
-        counts[label] = 1
-      else
-        counts[label] += 1
-      end
-    end
+    count +=1 if cell[:total] < 10000
   end
 end
-puts counts.max_by{|k,v| v}
+puts count
