@@ -12,14 +12,11 @@ input.each do |line|
   prereqs[letter] << prereq
 end
 
-letters = letters.uniq
-
-parents = letters.select do |l|
+available = letters.uniq.select do |l|
   !prereqs.key?(l)
-end
+end.sort
 
-available = parents.sort
-met = []
+done = []
 worker1 = {letter: nil, ready_in: 0}
 worker2 = {letter: nil, ready_in: 0}
 worker3 = {letter: nil, ready_in: 0}
@@ -30,7 +27,7 @@ time = 0
 while (!prereqs.empty? || workers.any?{|w| w[:ready_in] > 1}) do
   workers.each do |w|
     if w[:ready_in] == 1
-      met << w[:letter] if prereqs.none? {|p| p.include?(w[:letter])}
+      done << w[:letter] if prereqs.none? {|p| p.include?(w[:letter])}
       w[:letter] = nil
       w[:ready_in] = 0
     elsif w[:ready_in] > 1
@@ -38,7 +35,7 @@ while (!prereqs.empty? || workers.any?{|w| w[:ready_in] > 1}) do
     end
   end
   prereqs.each do |k,v|
-    if (met | v) == met
+    if (done | v) == done
       prereqs.delete(k)
       available << k
     end
